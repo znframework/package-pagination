@@ -95,6 +95,15 @@ interface PaginatorInterface
      */
     public function style(Array $style) : Paginator;
 
+     /**
+     * Sets paging's output type.
+     * 
+     * @param string $type - options[bootstrap|classic]
+     * 
+     * @return Pagination
+     */
+    public function output(String $type) : Paginator;
+
     /**
      * Returns the current URL for paging.
      * 

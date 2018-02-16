@@ -115,6 +115,13 @@ class Paginator implements PaginatorInterface
     protected $url = CURRENT_CFPATH;
 
     /**
+     * Output type
+     * 
+     * @var string
+     */
+    protected $output = 'classic';
+
+    /**
      * Magic constructor
      * 
      * @param void
@@ -259,6 +266,20 @@ class Paginator implements PaginatorInterface
     }
 
     /**
+     * Sets paging's output type.
+     * 
+     * @param string $type - options[bootstrap|classic]
+     * 
+     * @return Pagination
+     */
+    public function output(String $type) : Paginator
+    {
+        $this->settings['output'] = $type;
+
+        return $this;
+    }
+
+    /**
      * protected uri get control
      * 
      * @param string $page
@@ -309,6 +330,7 @@ class Paginator implements PaginatorInterface
         if( isset($config['firstName']) )   $this->firstTag     = $config['firstName'];
         if( isset($config['lastName']) )    $this->lastTag      = $config['lastName'];
         if( isset($config['type']) )        $this->type         = $config['type'];
+        if( isset($config['output']) )      $this->output       = $config['output'];
 
         $this->class = array_merge($configs['class'], ( $config['class'] ?? []) );
         $this->style = array_merge($configs['style'], ( $config['style'] ?? []) );
@@ -426,7 +448,7 @@ class Paginator implements PaginatorInterface
 
             if( $this->totalRows > $this->limit )
             {
-                return $first.' '.$links.' '.$last;
+                return $this->_ul($first.' '.$links.' '.$last);
             }
             else
             {
@@ -534,7 +556,7 @@ class Paginator implements PaginatorInterface
 
             if( $this->totalRows > $this->limit )
             {
-                return $firstTag.' '.$first.' '.$links.' '.$last.' '.$lastTag;
+                return $this->_ul($firstTag.' '.$first.' '.$links.' '.$last.' '.$lastTag);
             }
             else
             {
@@ -554,7 +576,60 @@ class Paginator implements PaginatorInterface
      */
     protected function _link($var, $fix, $val)
     {
-        return '<a href="'.$this->_uriGetControl($var).'"'.$this->_ajax($var).$fix.'>'.$val.'</a>';
+        return $this->_li($this->_a($var, $fix, $val), $fix);
+    }
+
+    /**
+     * protected a
+     * 
+     * @param string $var
+     * @param string $fix
+     * @param string $val
+     * 
+     * @return string
+     */
+    protected function _a($var, $attr, $val)
+    {
+        if( $this->output === 'bootstrap' )
+        {
+            $attr = NULL;
+        }
+
+        return '<a href="'.$this->_uriGetControl($var).'"'.$this->_ajax($var).$attr.'>'.$val.'</a>';
+    }
+
+    /**
+     * protected li
+     * 
+     * @param bool $type
+     * 
+     * @return string
+     */
+    protected function _li($link, $fix)
+    {
+        if( $this->output === 'bootstrap' )
+        {
+            return '<li'.$fix.'>' . $link . '</li>';
+        }
+
+        return $link;
+    }
+
+    /**
+     * Protected li
+     * 
+     * @param bool $type
+     * 
+     * @return string
+     */
+    protected function _ul($links)
+    {
+        if( $this->output === 'bootstrap' )
+        {
+            return '<ul class="pagination">' . $links . '</ul>';
+        }
+
+        return $links;
     }
 
     /**
