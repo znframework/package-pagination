@@ -295,7 +295,7 @@ class Paginator implements PaginatorInterface
             return Base::suffix($urlEx[0]) . $page . '?' . rtrim($urlEx[1], '/');
         }
 
-        return Base::suffix($this->url) . $page;
+        return ($this->type !== 'ajax' ? Base::suffix($this->url) : $this->url) . $page;
     }
 
     /**
