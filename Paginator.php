@@ -280,6 +280,16 @@ class Paginator implements PaginatorInterface
     }
 
     /**
+     * protected explode request get value
+     */
+    protected function _explodeRequestGetValue()
+    {
+        return ( $string = explode('?', $_SERVER['REQUEST_URI'])[1] ?? NULL)
+               ? '?' . $string
+               : '';
+    }
+
+    /**
      * protected uri get control
      * 
      * @param string $page
@@ -288,6 +298,8 @@ class Paginator implements PaginatorInterface
      */
     protected function _uriGetControl($page)
     {
+        $this->url .= $this->_explodeRequestGetValue();
+
         if( strstr($this->url, '?') )
         {
             $urlEx = explode('?', $this->url);
