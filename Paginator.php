@@ -613,11 +613,9 @@ class Paginator implements PaginatorInterface
 
         # It keeps the links to be formed.
         $numberLinks = NULL;
-
-        # Get total rows
-
+        
         # It keeps the last page information.
-        $lastPage    = ceil($this->totalRows / $this->limit);  
+        $lastPage    = $this->getPerPage();
 
         # It keeps the number of links to be displayed in pagination.
         $countLinks  = $this->countLinks;
