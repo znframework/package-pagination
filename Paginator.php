@@ -139,6 +139,24 @@ class Paginator implements PaginatorInterface
     protected $output = 'classic';
 
     /**
+     * Keeps pagination config
+     */
+    protected $config;
+
+    /**
+     * Magic set
+     * 
+     * @param string $propery
+     * @param mixed  $value
+     * 
+     * @return void
+     */
+    protected function __set($property, $value)
+    {
+        $this->$property = $value;
+    }
+
+    /**
      * Magic constructor
      * 
      * @param void
